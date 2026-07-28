@@ -131,6 +131,6 @@ Bot: Tenemos disponible:
      ¿Necesitás información sobre otro producto?
 ```
 
-## 👤 Autor
+##  Autores
 
 Santiago Moglia y Nuria Graef — Trabajo Práctico Final, integración de IA con automatización de flujos (n8n) y fuentes de datos externas (Google Sheets).
