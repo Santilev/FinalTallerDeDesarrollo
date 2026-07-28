@@ -4,11 +4,11 @@ Sistema de gestión de productos para una veterinaria con un chatbot basado en I
 
 Desarrollado como Trabajo Práctico Final utilizando **VirtualBox**, **DietPi**, **Docker Compose**, **n8n**, **Ollama** y **Google Sheets**, integrando un agente de IA capaz de consultar información en tiempo real sobre el stock y los productos de la veterinaria.
 
-## 🎯 Objetivo
+##  Objetivo
 
 Desarrollar un chatbot inteligente que permita consultar el catálogo de una veterinaria utilizando un modelo LLM local (Ollama) y una fuente de datos externa (Google Sheets), cumpliendo con los requisitos del trabajo práctico: incorporación de IA, contenedores Docker y documentación reproducible.
 
-## 🏗️ Arquitectura
+##  Arquitectura
 
 ```
 Usuario (chat)
@@ -27,27 +27,27 @@ Usuario (chat)
 | n8n | Workflow: recibe el chat y ejecuta el AI Agent |
 | Google Sheets API | Catálogo de productos (autenticación por cuenta de servicio) |
 
-## 📁 Contenido del repositorio
+## Contenido del repositorio
 
 ```
 ├── docker-compose.yml     # Definición del servicio n8n
 ├── workflow/
-│   └── PetShop.json       # Export del workflow de n8n (importable)
+│   └── PetShopN8N.json       # Export del workflow de n8n (importable)
 └── README.md
 ```
 
-## ✅ Requisitos previos
+## Requisitos previos
 
 - VirtualBox con una VM DietPi (con Avahi, Docker y LXDE instalados).
 - Una cuenta de servicio de Google Cloud con la Google Sheets API habilitada y con acceso de lectura al catálogo.
 
-## 🚀 Cómo levantar el entorno
+##  Cómo levantar el entorno
 
 ### 1. Instalar DietPi en VirtualBox
 Crear la VM e instalar DietPi. Durante la instalación, seleccionar los siguientes componentes desde el instalador:
-- **Avahi** (para acceso vía `nombre.local`)
+- **Avahi** 
 - **Docker**
-- **LXDE** (entorno de escritorio liviano)
+- **LXDE** 
 
 ### 2. Instalar Ollama dentro de la VM
 ```bash
@@ -66,27 +66,25 @@ docker compose up -d
 ```
 n8n queda disponible en `http://localhost:5678`.
 
-### 4. Importar el workflow
-En n8n: **Menú → Import from File** → seleccionar `workflow/PetShop.json`.
 
-### 5. Conectar Ollama desde n8n
-⚠️ **Importante**: como n8n corre en un contenedor Docker y Ollama corre directo en el host (DietPi), hay que usar la siguiente URL en las credenciales del nodo Ollama Chat Model — `localhost` no funciona desde dentro del contenedor:
+### 4. Conectar Ollama desde n8n
+ **Importante**: como n8n corre en un contenedor Docker y Ollama corre directo en el host (DietPi), hay que usar la siguiente URL en las credenciales del nodo Ollama Chat Model — `localhost` no funciona desde dentro del contenedor:
 ```
 http://host.docker.internal:11434
 ```
 
-### 6. Conectar Google Sheets
+### 5. Conectar Google Sheets
 1. Crear una cuenta de servicio en Google Cloud Console con la Google Sheets API habilitada.
 2. Compartir la planilla del catálogo con el email de la cuenta de servicio (permiso de lector).
 3. En el nodo **Get row(s) in sheet in Google Sheets**, cargar las credenciales con el email y la clave de la cuenta de servicio.
 
-### 7. Activar el workflow y probar
+### 6. Activar el workflow y probar
 Abrir el chat del workflow en n8n ("Open chat") y escribir, por ejemplo:
 ```
 ¿Tenés alimento para perros?
 ```
 
-## 🗂️ Estructura del Google Sheet
+##  Estructura del Google Sheet
 
 | ID | Producto | Especie | Tipo | Precio | Stock |
 |---|---|---|---|---|---|
@@ -97,7 +95,7 @@ Abrir el chat del workflow en n8n ("Open chat") y escribir, por ejemplo:
 - **Especie**: `Perro` o `Gato`
 - **Tipo**: `Alimento`, `Medicina` o `Accesorio`
 
-## 🤖 System Prompt del AI Agent
+## System Prompt del AI Agent
 
 ```
 Eres el asistente virtual de una veterinaria.
@@ -124,7 +122,7 @@ Después de recibir el catálogo:
 13. Los precios deben mostrarse con el formato $98.000.
 ```
 
-## 💬 Ejemplo de uso
+##  Ejemplo de uso
 
 ```
 Usuario: ¿tenés alimento para perro?
@@ -135,4 +133,4 @@ Bot: Tenemos disponible:
 
 ## 👤 Autor
 
-Santiago — Trabajo Práctico Final, integración de IA con automatización de flujos (n8n) y fuentes de datos externas (Google Sheets).
+Santiago Moglia y Nuria Graef — Trabajo Práctico Final, integración de IA con automatización de flujos (n8n) y fuentes de datos externas (Google Sheets).
