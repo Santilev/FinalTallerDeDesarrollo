@@ -1,0 +1,162 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        368,
+        -32
+      ],
+      "id": "9d65a31e-9a28-4975-9822-7676570d1255",
+      "name": "When chat message received",
+      "webhookId": "ed27df71-b0c3-4ef3-8696-062b2df60616"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Eres el asistente virtual de una veterinaria.\n\nTienes acceso a una herramienta de Google Sheets que devuelve el catálogo completo con las columnas:\nID, Producto, Especie, Tipo, Precio y Stock.\n\nCuando el usuario pregunte por productos, precios, stock, disponibilidad, especies o tipos, debes consultar siempre Google Sheets antes de responder.\n\nDespués de recibir el catálogo:\n\n1. Analiza todas las condiciones de la pregunta.\n2. Muestra únicamente las filas que cumplan todas las condiciones.\n3. \"Perro\" debe coincidir con Especie = \"Perro\".\n4. \"Gato\" debe coincidir con Especie = \"Gato\".\n5. \"Alimento\" o \"alimentos\" debe coincidir con Tipo = \"Alimento\".\n6. \"Medicina\", \"medicamento\" o \"medicamentos\" debe coincidir con Tipo = \"Medicina\".\n7. \"Accesorio\" o \"accesorios\" debe coincidir con Tipo = \"Accesorio\".\n8. Para buscar un producto, acepta coincidencias parciales del nombre.\n9. Nunca inventes productos, precios ni stock.\n10. Si no hay coincidencias, responde que no encontraste productos que cumplan la consulta.\n11. Responde siempre en español, de forma breve y directa.\n12. No muestres JSON, llamadas de herramientas ni información interna.\n13. Los precios deben mostrarse con el formato $98.000."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        592,
+        -32
+      ],
+      "id": "716cbd6a-21f7-42c0-a5d1-3ef807d32dce",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        592,
+        144
+      ],
+      "id": "c52baf9c-62bc-466a-8baf-d43a2c61b81e",
+      "name": "Ollama Chat Model",
+      "notesInFlow": false,
+      "credentials": {
+        "ollamaApi": {
+          "id": "WpfC3fL26Lfmwlk7",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Consulta el catálogo de productos de la veterinaria.\n\nContiene las columnas:\n\n- ID\n- Producto\n- Especie\n- Tipo\n- Precio\n- Stock\n\nUsa esta herramienta siempre que el usuario necesite información sobre productos, categorías, precios, stock o disponibilidad.",
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1fQ18YoDxwN-Z5quLuBN57WShP-Av7x0_Zzhdo_VLnXM",
+          "mode": "list",
+          "cachedResultName": "StockChatBot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fQ18YoDxwN-Z5quLuBN57WShP-Av7x0_Zzhdo_VLnXM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fQ18YoDxwN-Z5quLuBN57WShP-Av7x0_Zzhdo_VLnXM/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        816,
+        112
+      ],
+      "id": "bdec4ac3-bba4-45e0-8c03-8bd6d7afd312",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "pjEOytO41lq8H32v",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        688,
+        128
+      ],
+      "id": "85446a4b-871c-485c-b767-7da3c4ce6074",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b8a0d9d7-9e62-46b9-9ecc-a67d21ee2937",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2bb6e69e0e5fd5623f52a170b469ceb93c7f007e3d7d81839070ffa45e635494"
+  },
+  "nodeGroups": [],
+  "id": "aPE8quCf0YUigpUT",
+  "tags": []
+}
