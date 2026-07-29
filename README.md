@@ -26,11 +26,13 @@ Usuario (chat)
 | Ollama (`qwen2.5:3b`) | Modelo de lenguaje local, corre directo en DietPi |
 | n8n | Workflow: recibe el chat y ejecuta el AI Agent |
 | Google Sheets API | Catálogo de productos (autenticación por cuenta de servicio) |
+| App Inventor | (splash + WebViewer) |
 
 ## Contenido del repositorio
 
 ```
 ├── docker-compose.yml     # Definición del servicio n8n
+├── Chatbot.aia            #App Inventor
 ├── workflow/
 │   └── PetShopN8N.json       # Export del workflow de n8n (importable)
 └── README.md
