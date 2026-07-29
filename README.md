@@ -83,7 +83,46 @@ Abrir el chat del workflow en n8n ("Open chat") y escribir, por ejemplo:
 ```
 ¿Tenés alimento para perros?
 ```
+## 7. Instalar Ngrok
 
+Descargar Ngrok desde:
+
+https://ngrok.com/download
+
+Crear una cuenta gratuita.
+
+Obtener el **Authtoken** desde el panel de Ngrok.
+
+Configurarlo ejecutando:
+
+```bash
+ngrok config add-authtoken TU_AUTHTOKEN
+```
+
+Verificar la instalación:
+
+```bash
+ngrok version
+```
+## 8. Publicar el chatbot
+
+Con n8n ya iniciado:
+
+```bash
+ngrok http 5678
+```
+
+Ngrok generará una URL pública similar a:
+
+```
+Forwarding
+
+https://xxxx.ngrok-free.app
+```
+
+Esa dirección permite acceder al chatbot desde cualquier dispositivo conectado a Internet.
+
+En caso de utilizar webhooks, actualizar la variable `WEBHOOK_URL` del archivo `docker-compose.yml` con la URL generada por Ngrok.
 ##  Estructura del Google Sheet
 
 | ID | Producto | Especie | Tipo | Precio | Stock |
